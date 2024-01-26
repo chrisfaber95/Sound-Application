@@ -47,7 +47,6 @@ public class Timeline extends JComponent{
         
         g2d.setColor(Color.BLACK);
         g2d.drawLine(0, d.height / 2, d.width, d.height / 2);
-        //g2d.draw(new Line2D.Double(59.2d, 99.8d, 419.1d, 99.8d));
     }
 
     private void drawMarker(Graphics g){

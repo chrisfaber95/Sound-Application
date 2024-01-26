@@ -1,5 +1,7 @@
 package com.soundapp.gui;
 
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 
 public class MainFrame {
@@ -7,7 +9,8 @@ public class MainFrame {
     public MainFrame(){
         frame = new JFrame("Title");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(200, 200);
+        frame.setLayout(new GridLayout(0, 2));
+        frame.setSize(600, 300);
         frame.setVisible(true);
     }
 

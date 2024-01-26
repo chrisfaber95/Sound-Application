@@ -24,7 +24,7 @@ public class Soundblock {
     private Timer t;
     
     public Soundblock(){
-        filePath = "C:\\Users\\chris\\Downloads\\youtube_dQw4w9WgXcQ_audio.wav";
+        filePath = "";
         type = "wav";
         gui = new Gui(this);
         autostart = false;
