@@ -9,26 +9,27 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import com.soundapp.components.playlist.PlaylistManager;
+
 public class Soundblock {
 
-    private String filePath;
-    private String type;
-    private Boolean autostart;
-    private Long currentFrame;
+    private String filePath = "";
+    private String type = "wav";
+    private Boolean autostart = false;
+    private Boolean replay = false;
+    private Long currentFrame = (long) 0;
     private Clip clip;
     private AudioInputStream audioInputStream;
     private String status;
+    private PlaylistManager playlist;
 
     private Gui gui;
 
     private Timer t;
     
-    public Soundblock(){
-        filePath = "";
-        type = "wav";
+    public Soundblock(PlaylistManager playlist){
+        this.playlist = playlist;
         gui = new Gui(this);
-        autostart = false;
-        currentFrame = (long) 0;
     }
 
     protected void playSound(){
@@ -47,14 +48,17 @@ public class Soundblock {
                 int percentage = (int) (0.5d + ((double)location/(double)length) * 100);
                 gui.updateTimeline(percentage);
                 if(location == length){
-                    gui.updateTimeline(0);
                     t.cancel();
+                    soundEnded();
                 }
             }
         }, 1000, 500);
     }
 
     protected void loadSound(){
+        if(playlist.getPlaylist().size() > 0){
+            filePath = playlist.getPlaylist().getFirst().getAbsolutePath();
+        }
         try {
             audioInputStream = AudioSystem.getAudioInputStream(
                     new File(filePath).getAbsoluteFile()); 
@@ -89,6 +93,17 @@ public class Soundblock {
             
         }
 
+    }
+
+    private void soundEnded(){
+        gui.updateTimeline(0);
+        if(this.replay == true){
+            restartSound();
+        }
+        else{
+            playlist.removeIndexFromPlaylist(0);
+        }
+        
     }
 
     protected void restartSound(){

@@ -1,5 +1,6 @@
 package com.soundapp.components.soundblock;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import javax.swing.border.Border;
 
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -25,6 +27,7 @@ public class Gui extends JPanel {
     private JButton button;
     private JButton button1;
     private JButton button2;
+    private JButton button3;
     private Timeline timeline;
     private Soundblock parent;
     private MouseListener ml;
@@ -33,31 +36,31 @@ public class Gui extends JPanel {
     public Gui(Soundblock parent){
         this.parent = parent;
         
-        setLayout(null);
+        setLayout(new BorderLayout());
 
         Border redline = BorderFactory.createLineBorder(Color.red);
         setBorder(redline);
 
         JLabel label = new JLabel("testlabel");
-        add(label);
-        setButton(null);
-        setPauseButton(null);
-        setStartButton(null);
+        add(label, BorderLayout.NORTH);
 
-        button.setBounds(10, 40, 80, 20);
-        button1.setBounds(100, 40, 80, 20);
-        button2.setBounds(190, 40, 80, 20);
-
-        add(button);
-        add(button1);
-        add(button2);
-
+        add(setButtonPanel(), BorderLayout.CENTER);
+        
         timeline = new Timeline(0);
         timeline.setBounds(10, 60, 200, 20);
-        add(timeline);
+        add(timeline, BorderLayout.SOUTH);
         setMouseListener();
         timeline.addMouseListener(ml);
-        //paint()
+    }
+
+    private JPanel setButtonPanel(){
+        JPanel playbackButtons = new JPanel();
+        playbackButtons.setLayout(new BoxLayout(playbackButtons, 2));
+        playbackButtons.add(setLoadButton());
+        playbackButtons.add(setStartButton());
+        playbackButtons.add(setPauseButton());
+        playbackButtons.add(setStopButton());
+        return playbackButtons;
     }
 
     public JButton getButton(){
@@ -73,8 +76,8 @@ public class Gui extends JPanel {
         timeline.updateMarkerLocation(location);
     }
 
-    private void setButton(String url){
-        button = new JButton("Play");
+    private JButton setLoadButton(){
+        JButton button = new JButton("Load");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -82,11 +85,11 @@ public class Gui extends JPanel {
                 parent.loadSound();
             }
         });
-
+        return button;
     }
-    private void setStartButton(String url){
-        button1 = new JButton("Start");
-        button1.addActionListener(new ActionListener() {
+    private JButton setStartButton(){
+        JButton button = new JButton("Play");
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                // System.out.println(e);
@@ -94,16 +97,29 @@ public class Gui extends JPanel {
             }
         });
 
+        return button;
     }
-    private void setPauseButton(String url){
-        button2 = new JButton("Pause");
-        button2.addActionListener(new ActionListener() {
+    private JButton setPauseButton(){
+        JButton button = new JButton("Pause");
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 System.out.println(e);
                 parent.pauseSound();
             }
         });
+        return button;
+    }
+    private JButton setStopButton(){
+        JButton button = new JButton("Stop");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                System.out.println(e);
+                parent.stopSound();
+            }
+        });
+        return button;
     }
 
 
